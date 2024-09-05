@@ -101,8 +101,6 @@ FVector UGAbilitySystemComponent::RoundDirection(const FVector& inVector)
 	float xDir = FMath::Abs(inVector.X);
 	float zDir = inVector.Z;
 
-	UE_LOG(LogTemp, Warning, TEXT("X: %f, Y: %f"), xDir, zDir);
-
 	if (xDir < 0.5f && zDir < 0.3f && zDir >= 0)
 	{
 		return FVector(1, 0, 0); // Neutral Attack
