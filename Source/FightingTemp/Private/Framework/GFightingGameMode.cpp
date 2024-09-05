@@ -27,12 +27,48 @@
 #include "Widgets/ScoreKeeper.h"
 
 /*
+*	==							 UE5 Local Co-op Bug									==
+* 
 *	As far as I've researched about local co-op in UE5 it currently does not work
 *	with one gamepad and a keyboard. The keyboard and gamepad will just control Player 0,
 *	to fix this you must use two gamepads.
 *	
 *	If you are testing this on keyboard and cannot control both players then that is
 *	the issue
+* 
+*	Alternatively you could always just hard code in two player keyboard controls
+*	but we shouldn't need that for this project
+* 
+*/
+
+/*
+*	==							   GameMode Logic		    							==
+*
+*	BeginPlay(): creates the Main Camera, Gameplay UI, and both players in that order.
+*	It does also does any initializing that needs to be done, afterwards it starts the
+*	Countdown Timer
+* 
+*	Main Logic: The main logic of this class is centered around 3 FTimerHandles
+*	CountdownTimer, RoundTimer, and IntermissionTimer
+*	Each Timer Handle has there own corresponding function and TimeRemaining float var
+* 
+*	"CountdownTimer" is only responsible for the countdown splash text, and granting
+*	the player their movement back.
+* 
+*	"RoundTimer" is only responsible for it's own timer and manually ending the round
+*	only when it times out.
+* 
+*	"IntermissionTimer" is the time between rounds after a round ends. it is responsible for
+*	resetting the players back to there original state after it times out, starting the 
+*	gameplay loop over again
+* 
+*	These timers will keep cycling until a player has reached the set score to win
+* 
+*	======================================================================================
+* 
+*	I do realize this is a wall of text but as of right now the code is really messy
+*	and if this is still here I haven't refactored it yet.
+* 
 */
 
 AGFightingGameMode::AGFightingGameMode()
@@ -294,7 +330,9 @@ void AGFightingGameMode::UpdateCountdownTimer()
 
 	CountdownTimeRemaining -= 1.0f;
 
-	/*
+	/* 
+	*	This does the actual countdown if you like that style better, Below I just do the "Round x" thing
+	* 
 	FText Text = FText::AsNumber(FMath::FloorToInt(CountdownTimeRemaining));
 	GameplayUI->SetCountdownValue(Text);
 	*/
@@ -305,6 +343,7 @@ void AGFightingGameMode::UpdateCountdownTimer()
 		GameplayUI->SetCountdownValue(Text);
 	}
 
+	// Gives player movement back
 	if (CountdownTimeRemaining <= 0.0f)
 	{
 		StartRound();
@@ -314,6 +353,7 @@ void AGFightingGameMode::UpdateCountdownTimer()
 		GameplayUI->SetCountdownValue(FText::FromString("FIGHT!"));
 	}
 
+	// Gets rid of FIGHT splash text
 	if (CountdownTimeRemaining <= -0.5f)
 	{
 		GameplayUI->SetCountdownValue(FText::FromString(""));

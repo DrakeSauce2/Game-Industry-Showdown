@@ -9,10 +9,8 @@ UPushboxComponent::UPushboxComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 
-	// Set default values
 	PushForceStrength = 1000.0f;
 
-	// Bind the overlap event
 	OnComponentBeginOverlap.AddDynamic(this, &UPushboxComponent::OnPushboxBeginOverlap);
 }
 

@@ -21,7 +21,6 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	// Function to handle overlap events
 	UFUNCTION()
 	void OnPushboxBeginOverlap(
 		UPrimitiveComponent* OverlappedComp,
@@ -31,7 +30,6 @@ private:
 		bool bFromSweep,
 		const FHitResult& SweepResult);
 
-	// Variable to control the strength of the push force
 	UPROPERTY(EditAnywhere, Category = "Pushbox")
-		float PushForceStrength;
+	float PushForceStrength;
 };
