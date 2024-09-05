@@ -93,6 +93,9 @@ public:
 
 	void FlipCharacter(bool bIsFacingRight);
 
+	UFUNCTION()
+	float GetFlipDirection() const;
+
 	void SetInputEnabled(bool state);
 
 	UFUNCTION()

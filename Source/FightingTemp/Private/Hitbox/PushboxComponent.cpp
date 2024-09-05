@@ -28,21 +28,14 @@ void UPushboxComponent::OnPushboxBeginOverlap(UPrimitiveComponent* OverlappedCom
 	ACharacter* OtherCharacter = Cast<ACharacter>(OtherActor);
 	if (OtherCharacter)
 	{
-		// Get the character's movement component
 		UCharacterMovementComponent* CharacterMovement = OtherCharacter->GetCharacterMovement();
 		if (CharacterMovement)
 		{
-			// Calculate the push direction
 			FVector PushDirection = OtherCharacter->GetActorLocation() - GetComponentLocation();
-			PushDirection.Z = 0; // Keep the push horizontal
-			PushDirection.Normalize();
+			PushDirection = PushDirection.GetSafeNormal2D();
 
-			// Apply the push force
 			FVector PushForce = PushDirection * PushForceStrength;
-			CharacterMovement->AddImpulse(PushForce, true);
-
-			// Log the push
-			UE_LOG(LogTemp, Log, TEXT("Pushbox activated and pushed %s"), *OtherActor->GetName());
+			CharacterMovement->AddImpulse(PushForce, false);
 		}
 	}
 }

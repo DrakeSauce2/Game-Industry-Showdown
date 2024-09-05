@@ -7,6 +7,9 @@
 #include "GameplayAbilities/GAbilitySystemTypes.h"
 #include "GAbilitySystemComponent.generated.h"
 
+struct FGameplayAbilitySpec;
+class UGA_AbilityBase;
+
 USTRUCT(BlueprintType)
 struct FDirectionAttackKey 
 {
@@ -31,8 +34,21 @@ struct FDirectionAttackKey
 
 };
 
-struct FGameplayAbilitySpec;
-class UGA_AbilityBase;
+USTRUCT(BlueprintType)
+struct FAttackGroup 
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UGA_AbilityBase> HighAttack;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UGA_AbilityBase> NeutralAttack;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UGA_AbilityBase> LowAttack;
+};
+
 /**
  * 
  */
@@ -58,13 +74,13 @@ private:
 	TSubclassOf<UGameplayEffect> FullStatEffect;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Attacks")
-	TArray<TSubclassOf<class UGA_AbilityBase>> LightAttackAbilities;
+	FAttackGroup LightAttackGroup;
 	UPROPERTY(EditDefaultsOnly, Category = "Attacks")
-	TArray<TSubclassOf<class UGA_AbilityBase>> MediumAttackAbilities;
+	FAttackGroup MediumAttackGroup;
 	UPROPERTY(EditDefaultsOnly, Category = "Attacks")
-	TArray<TSubclassOf<class UGA_AbilityBase>> HeavyAttackAbilities;
+	FAttackGroup HeavyAttackGroup;
 	UPROPERTY(EditDefaultsOnly, Category = "Attacks")
-	TArray<TSubclassOf<class UGA_AbilityBase>> SpecialAttackAbilities;
+	FAttackGroup SpecialAttackGroup;
 
 	TArray<FVector> AttackDirections = // Side is neutral attack
 	{ 
@@ -73,9 +89,11 @@ private:
 		FVector(0, 0, -1)		// Down Attack
 	};
 
-	FVector RoundDirection(FVector inVector);
+	FVector RoundDirection(const FVector& inVector);
 
-	void AssignAbilityAttackDirections(const int& Index, EAbilityInputID InputID, FGameplayAbilitySpecHandle SpecHandle);
+	void SetupAttackGroupToAttackMap(FAttackGroup* AttackGroup, const EAbilityInputID& InputType);
+
+	void AssignAbilityAttackDirections(const int& Index, const EAbilityInputID& InputID, const FGameplayAbilitySpecHandle& SpecHandle);
 
 	UPROPERTY()
 	TMap<FDirectionAttackKey, FGameplayAbilitySpecHandle> DirectionToAbilityHandleMap;

@@ -156,6 +156,11 @@ void AGCharacterBase::FlipCharacter(bool bIsFacingRight)
 	GetMesh()->SetWorldScale3D(NewScale);
 }
 
+float AGCharacterBase::GetFlipDirection() const
+{
+	return GetMesh()->GetComponentScale().Y;
+}
+
 #pragma region Init Functions
 
 void AGCharacterBase::InitAttributes()
