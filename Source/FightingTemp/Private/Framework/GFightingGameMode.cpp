@@ -127,6 +127,20 @@ void AGFightingGameMode::Tick(float DeltaTime)
 
 #pragma region Helper Functions
 
+void AGFightingGameMode::UpdatePlayerFlip()
+{
+	if (!GetPlayerOne() || !GetPlayerTwo()) return;
+
+	float PlayerOneXPosition = GetPlayerOne()->GetActorLocation().X;
+	float PlayerTwoXPosition = GetPlayerTwo()->GetActorLocation().X;
+
+	float MidpointX = (PlayerOneXPosition + PlayerTwoXPosition) / 2.0f;
+
+	// If true is facing right, else is facing left
+	GetPlayerOne()->FlipCharacter(PlayerOneXPosition < MidpointX);
+	GetPlayerTwo()->FlipCharacter(PlayerTwoXPosition < MidpointX);
+}
+
 void AGFightingGameMode::SetCameraViewTargets()
 {
 	APlayerController* PlayerOneController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
@@ -197,6 +211,8 @@ void AGFightingGameMode::EndRound()
 
 	SetAllPlayersControllerEnabled(false);
 
+	DetermineRoundOutcome();
+
 	HasPlayerWon();
 
 	// Maybe wait for a bit for animations or fade-in/fade-out then reset for next round or match end
@@ -247,6 +263,9 @@ void AGFightingGameMode::HasPlayerWon()
 				// Alternatively we could use the character name here
 				FText Text = FText::Format(FText::FromString("Player {0} Wins!"), FText::AsNumber(i));
 				GameplayUI->SetCountdownValue(Text);
+
+				// TODO: Show mouse cursor
+				GameplayUI->SetActiveWidgetSwitcherIndex(1);
 			}
 
 			// TODO: Do win stuff. Go Back To Main Menu
@@ -270,36 +289,7 @@ void AGFightingGameMode::HandlePlayerDead(int32 PlayerID)
 	// this is jank but, its so ensure it doesn't double kill
 	if (!GetWorldTimerManager().IsTimerActive(RoundTimerHandle)) return; 
 
-	if (PlayerID == 0)
-	{
-		PlayerDataArray[1].Score++;
-
-		if (GameplayUI)
-			GameplayUI->GetScoreKeeper()->SetPlayerTwoScoreMarkActive(PlayerDataArray[1].Score - 1);
-	}
-	else 
-	{
-		PlayerDataArray[0].Score++;
-
-		if (GameplayUI)
-			GameplayUI->GetScoreKeeper()->SetPlayerOneScoreMarkActive(PlayerDataArray[0].Score - 1);
-	}
-		
 	EndRound();
-}
-
-void AGFightingGameMode::UpdatePlayerFlip()
-{
-	if (!GetPlayerOne() || !GetPlayerTwo()) return;
-
-	float PlayerOneXPosition = GetPlayerOne()->GetActorLocation().X;
-	float PlayerTwoXPosition = GetPlayerTwo()->GetActorLocation().X;
-
-	float MidpointX = (PlayerOneXPosition + PlayerTwoXPosition) / 2.0f;
-
-	// If true is facing right, else is facing left
-	GetPlayerOne()->FlipCharacter(PlayerOneXPosition < MidpointX);
-	GetPlayerTwo()->FlipCharacter(PlayerTwoXPosition < MidpointX);
 }
 
 #pragma endregion
@@ -317,8 +307,6 @@ void AGFightingGameMode::UpdateRoundTimer()
 
 	if (RoundTimeRemaining <= 0)
 	{
-		DetermineRoundOutcome();
-
 		EndRound();
 	}
 }

@@ -21,6 +21,7 @@ public:
 
 	void SetTimerValue(FText Text);
 	void SetCountdownValue(FText Text);
+	void SetActiveWidgetSwitcherIndex(const int32& Index);
 
 	FORCEINLINE UValueGauge* GetPlayerOneHealthBar() { return PlayerOneHealthBar; }
 	FORCEINLINE UValueGauge* GetPlayerTwoHealthBar() { return PlayerTwoHealthBar; }
@@ -42,5 +43,7 @@ private:
 	UPROPERTY(VisibleDefaultsOnly, meta = (BindWidget))
 	class UTextBlock* CountdownText;
 
+	UPROPERTY(VisibleDefaultsOnly, meta = (BindWidget))
+	class UWidgetSwitcher* WidgetSwitcher;
 
 };
