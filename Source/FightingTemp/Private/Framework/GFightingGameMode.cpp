@@ -2,6 +2,8 @@
 
 #include "Framework/GFightingGameMode.h"
 
+#include "GameFramework/PlayerController.h"
+
 #include "GameplayAbilities/GAbilitySystemComponent.h"
 
 #include "Engine/World.h"
@@ -89,11 +91,14 @@ void AGFightingGameMode::BeginPlay()
 
 	SpawnPlayerControllers();
 
-	GetPlayerOne()->SetHealthBar(GameplayUI->GetPlayerOneHealthBar());
+
+	if(GameplayUI)
+		GetPlayerOne()->SetHealthBar(GameplayUI->GetPlayerOneHealthBar());
 	GetPlayerOne()->InitAttributes();
 	GetPlayerOne()->InitAbilities();
 
-	GetPlayerTwo()->SetHealthBar(GameplayUI->GetPlayerTwoHealthBar());
+	if(GameplayUI)
+		GetPlayerTwo()->SetHealthBar(GameplayUI->GetPlayerTwoHealthBar());
 	GetPlayerTwo()->InitAttributes();
 	GetPlayerTwo()->InitAbilities();
 
@@ -266,6 +271,11 @@ void AGFightingGameMode::HasPlayerWon()
 
 				// TODO: Show mouse cursor
 				GameplayUI->SetActiveWidgetSwitcherIndex(1);
+			}
+
+			APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+			if (PlayerController) {
+				PlayerController->bShowMouseCursor = true;
 			}
 
 			// TODO: Do win stuff. Go Back To Main Menu

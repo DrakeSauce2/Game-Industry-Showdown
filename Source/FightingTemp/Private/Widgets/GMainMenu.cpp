@@ -3,6 +3,7 @@
 
 #include "Widgets/GMainMenu.h"
 
+
 void UGMainMenu::NativeConstruct()
 {
 	Super::NativeConstruct();

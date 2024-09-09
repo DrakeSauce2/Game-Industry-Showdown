@@ -20,4 +20,6 @@ public:
 private:
 	TSubclassOf<class UButton> CharacterButtonClass;
 
+
+
 };

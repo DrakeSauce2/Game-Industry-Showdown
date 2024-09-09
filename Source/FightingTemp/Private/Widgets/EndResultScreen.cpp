@@ -5,6 +5,10 @@
 
 #include "Components/Button.h"
 
+#include "Engine/World.h"
+
+#include "Kismet/GameplayStatics.h"
+
 void UEndResultScreen::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -22,7 +26,18 @@ void UEndResultScreen::Restart()
 void UEndResultScreen::MainMenu()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Main Menuing or something!"));
+	UGameplayStatics::OpenLevel(GetWorld(), FName("Main_Menu"));
 
+	/*
+	*	Handles Garabage Collection, The game will crash trying to re - enter The fight scene again from main menu! 
+	*	Idk why Open Level Handles other garbage collection but not all garbage collection.
+	* 
+	*/ 
+	APlayerController* PlayerTwoController = UGameplayStatics::GetPlayerController(GetWorld(), 1);
+	if (PlayerTwoController != nullptr)
+	{
+		UGameplayStatics::RemovePlayer(PlayerTwoController, true);
+	}
 }
 
 void UEndResultScreen::Credits()
