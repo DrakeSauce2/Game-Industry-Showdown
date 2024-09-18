@@ -47,15 +47,29 @@ void UGA_PNeutralSpecial::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 
 	if (DialogueSpawn)
 	{
-		FVector SpawnLocation = ActorInfo->OwnerActor->GetActorLocation() + FVector(200.0f, 0.0f, 0.0f);
+		FVector SpawnLocation = ActorInfo->OwnerActor->GetActorLocation() + FVector(200.0f, 0.0f, 100.0f);
 		FRotator SpawnRotation = FRotator::ZeroRotator;
 
 		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = ActorInfo->OwnerActor.Get();
+		//SpawnParams.Instigator = ActorInfo->AvatarActor.Get();
 		//SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 		AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(DialogueSpawn, SpawnLocation, SpawnRotation, SpawnParams);
 
+		if (SpawnedActor)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Spawned Object: %s"), *SpawnedActor->GetName());
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("Faild to spawn object."));
+		}
 
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("No class set to spawn."));
 	}
 
 	UAbilityTask_PlayMontageAndWait* PlayComboMotage
