@@ -51,9 +51,9 @@ void UGA_PNeutralSpecial::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 		FRotator SpawnRotation = FRotator::ZeroRotator;
 
 		FActorSpawnParameters SpawnParams;
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+		//SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
-		//AActor*
+		AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(DialogueSpawn, SpawnLocation, SpawnRotation, SpawnParams);
 
 
 	}
