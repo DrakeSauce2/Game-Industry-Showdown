@@ -31,11 +31,12 @@ void UGA_ADownSpecial::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 		return;
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Ability Commited! Playing Montage! Fucking WOrks!!!"));
+	UE_LOG(LogTemp, Warning, TEXT("Ability Commited! Playing Montage! WOrks!!!!!"));
 
 	FActorSpawnParameters SpawnParams;
-
-	AActor* TempActor = GetWorld()->SpawnActor<AActor>(KeyFrameClass, SpawnParams);
+	FVector Location = FVector(100.0f, 100.0f, 300.0f); // Location to spawn
+	FRotator Rotation = FRotator(0.0f, 0.0f, 0.0f);      // Rotation
+	AActor* TempActor = GetWorld()->SpawnActor<AActor>(KeyFrameClass, Location, Rotation, SpawnParams);
 
 	if (TempActor)
 	{
