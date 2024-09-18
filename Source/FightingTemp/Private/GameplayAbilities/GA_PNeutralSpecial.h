@@ -20,6 +20,9 @@ class UGA_PNeutralSpecial : public UGA_AbilityBase
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	TSubclassOf<class UGameplayEffect> DamageEffect;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+	TSubclassOf<AActor> DialogueSpawn;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Anim")
 	UAnimMontage* DamageMontage;
 

@@ -25,6 +25,8 @@ UGA_PNeutralSpecial::UGA_PNeutralSpecial()
 	TriggerData.TriggerTag = UGAbilityGenericTags::GetBasicAttackAcitvationTag();
 	TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
 	AbilityTriggers.Add(TriggerData);
+
+	DialogueSpawn = nullptr;
 }
 
 void UGA_PNeutralSpecial::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -42,6 +44,19 @@ void UGA_PNeutralSpecial::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 	}
 
 	UE_LOG(LogTemp, Warning, TEXT("Ability Commited! Playing Montage!"));
+
+	if (DialogueSpawn)
+	{
+		FVector SpawnLocation = ActorInfo->OwnerActor->GetActorLocation() + FVector(200.0f, 0.0f, 0.0f);
+		FRotator SpawnRotation = FRotator::ZeroRotator;
+
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+
+		//AActor*
+
+
+	}
 
 	UAbilityTask_PlayMontageAndWait* PlayComboMotage
 		= UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
@@ -68,6 +83,7 @@ void UGA_PNeutralSpecial::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 	//needed for ai to tirgger basic attack.
 	UAbilityTask_WaitGameplayEvent* WaitForActivation = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(this, UGAbilityGenericTags::GetBasicAttackAcitvationTag());
 	WaitForActivation->EventReceived.AddDynamic(this, &UGA_PNeutralSpecial::TryCommitSpecial);
+
 	WaitForActivation->ReadyForActivation();
 }
 
