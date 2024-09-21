@@ -64,3 +64,13 @@ void AGFighterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 }
 
+void AGFighterCharacter::SaveKeyFrameActorLocation(FVector Location)
+{
+	SavedKeyFrameLocation = Location;
+}
+
+FVector AGFighterCharacter::GetSavedKeyFrameActorLocation() const
+{
+	return SavedKeyFrameLocation;
+}
+

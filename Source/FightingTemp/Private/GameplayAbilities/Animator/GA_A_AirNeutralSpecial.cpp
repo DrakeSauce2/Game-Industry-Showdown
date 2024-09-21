@@ -1,13 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GameplayAbilities/Animator/GA_ADownSpecial.h"
+#include "GameplayAbilities/Animator/GA_A_AirNeutralSpecial.h"
 #include "GameplayAbilities/GAbilityGenericTags.h"
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
 #include "Player/GFighterCharacter.h"
 
-UGA_ADownSpecial::UGA_ADownSpecial()
+
+UGA_A_AirNeutralSpecial::UGA_A_AirNeutralSpecial()
 {
 	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag("ability.combo.ability"));
 	BlockAbilitiesWithTag.AddTag(FGameplayTag::RequestGameplayTag("ability.combo.ability"));
@@ -18,7 +19,7 @@ UGA_ADownSpecial::UGA_ADownSpecial()
 	AbilityTriggers.Add(TriggerData);
 }
 
-void UGA_ADownSpecial::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
+void UGA_A_AirNeutralSpecial::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
@@ -32,33 +33,31 @@ void UGA_ADownSpecial::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 		return;
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Ability Commited! Playing Montage! WOrks!!!!!"));
+	UE_LOG(LogTemp, Warning, TEXT("Ability Commited! AIR NEUTRAL WOrks!!!!!"));
 
 	if (ActorInfo && ActorInfo->AvatarActor.IsValid())
 	{
 		UE_LOG(LogTemp, Error, TEXT("Avatar Actor is Valid, Yuhhhhhh!!!!!"));
 
 		//ActorInfo->OwnerActor.Get()
-		AActor* PlayerActor = ActorInfo->AvatarActor.Get(); 
+		AActor* PlayerActor = ActorInfo->AvatarActor.Get();
 
-		FActorSpawnParameters SpawnParams;
-		FVector Location = PlayerActor->GetActorLocation(); // Location to spawn
-		FRotator Rotation = PlayerActor->GetActorRotation();      // Rotation
-		AActor* TempActor = GetWorld()->SpawnActor<AActor>(KeyFrameClass, Location, Rotation, SpawnParams);
+		UE_LOG(LogTemp, Warning, TEXT("Actor spawned at player's location!"));
 
-		if (TempActor)
+		// Save the location of the spawned actor
+		AGFighterCharacter* PlayerCharacter = Cast<AGFighterCharacter>(PlayerActor);
+		if (PlayerCharacter)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Actor spawned at player's location!"));
+			// Get the saved location
+			FVector SavedLocation = PlayerCharacter->GetSavedKeyFrameActorLocation();
 
-			// Save the location of the spawned actor
-		    AGFighterCharacter* PlayerCharacter = Cast<AGFighterCharacter>(PlayerActor);
-			if (PlayerCharacter)
-			{
-				PlayerCharacter->SaveKeyFrameActorLocation(TempActor->GetActorLocation());
-			}
+			// Teleport or move the player to the saved location
+			PlayerCharacter->SetActorLocation(SavedLocation);
+
+			UE_LOG(LogTemp, Warning, TEXT("Player teleported to saved location!"));
 		}
 	}
+
 	// End the ability manually so it can be reactivated later
 	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
-
 }

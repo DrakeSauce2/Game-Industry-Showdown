@@ -33,4 +33,18 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+
+	
+	// Not sure if we should put this somewhere else
+public:
+	// Function to save the spawn location
+	void SaveKeyFrameActorLocation(FVector Location);
+
+	// Getter for the saved location
+	FVector GetSavedKeyFrameActorLocation() const;
+
+private:
+	// Variable to store the spawn location
+	FVector SavedKeyFrameLocation;
+
 };

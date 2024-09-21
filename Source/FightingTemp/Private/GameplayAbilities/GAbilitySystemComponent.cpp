@@ -89,8 +89,11 @@ void UGAbilitySystemComponent::TryActivateDirectionalAttack(const FVector& Direc
 
 	FGameplayAbilitySpecHandle* SpecHandle = DirectionToAbilityHandleMap.Find(Key);
 	if (SpecHandle) {
-		TryActivateAbility(*SpecHandle, false);
+		bool fuck = TryActivateAbility(*SpecHandle, false);
+		UE_LOG(LogTemp, Error, TEXT("Something Happening Here!!! %s"), fuck ? TEXT("true") : TEXT("false"));
 	}
+	
+
 }
 
 #pragma region Helper Functions 
