@@ -45,6 +45,8 @@ void UGAbilitySystemComponent::GrantInitialAbilities()
 	SetupAttackGroupToAttackMap(&MediumAttackGroup, EAbilityInputID::MediumAttack);
 	SetupAttackGroupToAttackMap(&HeavyAttackGroup, EAbilityInputID::HeavyAttack);
 	SetupAttackGroupToAttackMap(&SpecialAttackGroup, EAbilityInputID::SpecialAttack);
+
+	AirAttackSpecHandle = GiveAbility(FGameplayAbilitySpec{ AirAttack, 1, 1, GetOwner() });
 }
 
 void UGAbilitySystemComponent::SetupAttackGroupToAttackMap(FAttackGroup* AttackGroup, const EAbilityInputID& InputType)
@@ -77,7 +79,9 @@ void UGAbilitySystemComponent::TryActivateDirectionalAttack(const FVector& Direc
 	if (!IsGrounded)
 	{
 		// Do Air Attack
-
+		FGameplayAbilitySpecHandle SpecHandle = AirAttackSpecHandle;
+			bool yoo = TryActivateAbility(SpecHandle, false);
+			UE_LOG(LogTemp, Error, TEXT("Something Happening Here!!! %s"), yoo ? TEXT("true") : TEXT("false"));
 		return;
 	}
 
@@ -89,8 +93,8 @@ void UGAbilitySystemComponent::TryActivateDirectionalAttack(const FVector& Direc
 
 	FGameplayAbilitySpecHandle* SpecHandle = DirectionToAbilityHandleMap.Find(Key);
 	if (SpecHandle) {
-		bool fuck = TryActivateAbility(*SpecHandle, false);
-		UE_LOG(LogTemp, Error, TEXT("Something Happening Here!!! %s"), fuck ? TEXT("true") : TEXT("false"));
+		bool yoo = TryActivateAbility(*SpecHandle, false);
+		UE_LOG(LogTemp, Error, TEXT("Something Happening Here!!! %s"), yoo ? TEXT("true") : TEXT("false"));
 	}
 	
 

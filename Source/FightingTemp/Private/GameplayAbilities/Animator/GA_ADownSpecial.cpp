@@ -16,6 +16,8 @@ UGA_ADownSpecial::UGA_ADownSpecial()
 	TriggerData.TriggerTag = UGAbilityGenericTags::GetBasicAttackAcitvationTag();
 	TriggerData.TriggerSource = EGameplayAbilityTriggerSource::GameplayEvent;
 	AbilityTriggers.Add(TriggerData);
+
+
 }
 
 void UGA_ADownSpecial::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -33,6 +35,7 @@ void UGA_ADownSpecial::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 	}
 
 	UE_LOG(LogTemp, Warning, TEXT("Ability Commited! Playing Montage! WOrks!!!!!"));
+
 
 	if (ActorInfo && ActorInfo->AvatarActor.IsValid())
 	{

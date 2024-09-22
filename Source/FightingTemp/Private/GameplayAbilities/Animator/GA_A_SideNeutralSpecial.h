@@ -13,5 +13,14 @@ UCLASS()
 class UGA_A_SideNeutralSpecial : public UGA_AbilityBase
 {
 	GENERATED_BODY()
-	
+
+	UGA_A_SideNeutralSpecial();
+
+	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+
+
+	UPROPERTY(EditDefaultsOnly, Category = "Anim")
+	UAnimMontage* DamageMontage;
+	UPROPERTY(EditDefaultsOnly, Category = "Actor")
+	TSubclassOf<AActor> KeyFrameClass;
 };

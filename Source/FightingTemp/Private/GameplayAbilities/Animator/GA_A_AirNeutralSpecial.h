@@ -6,6 +6,7 @@
 #include "GameplayAbilities/GA_AbilityBase.h"
 #include "GA_A_AirNeutralSpecial.generated.h"
 
+class AGFighterCharacter;
 /**
  * 
  */
@@ -17,10 +18,17 @@ class UGA_A_AirNeutralSpecial : public UGA_AbilityBase
 	UGA_A_AirNeutralSpecial();
 
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
-
+	UFUNCTION()
+	void UpdateCharacterLocation();
+	void StopCharacterMovement();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Anim")
 	UAnimMontage* DamageMontage;
 	UPROPERTY(EditDefaultsOnly, Category = "Actor")
 	TSubclassOf<AActor> KeyFrameClass;
+
+	FTimerHandle TimerForCharacterMovement;
+	int DurationOfMovement;
+	float SpeedOfAttackMovement;
+	AGFighterCharacter* PlayerCharacter;
 };
