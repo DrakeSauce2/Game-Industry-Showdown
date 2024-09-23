@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "ADialogueBox.generated.h"
 
+class UHitboxComponent;
 UCLASS()
 class AADialogueBox : public AActor
 {
@@ -14,6 +15,9 @@ class AADialogueBox : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AADialogueBox();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Hitbox")
+	UHitboxComponent* HitboxComponent;
 
 protected:
 	// Called when the game starts or when spawned
