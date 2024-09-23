@@ -38,6 +38,7 @@ class UGA_PNeutralSpecial : public UGA_AbilityBase
 	FName SpecialName;
 
 	bool bSpecialCommitted;
+	bool bIsFlipped;
 
 	void SetupWaitInputTask();
 };

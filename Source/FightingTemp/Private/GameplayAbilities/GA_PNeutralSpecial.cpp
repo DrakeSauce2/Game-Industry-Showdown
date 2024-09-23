@@ -15,6 +15,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "GameplayAbilities/GAbilityGenericTags.h"
 #include "GameplayTagsManager.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 UGA_PNeutralSpecial::UGA_PNeutralSpecial()
 {
@@ -47,13 +48,48 @@ void UGA_PNeutralSpecial::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 
 	if (DialogueSpawn)
 	{
-		FVector SpawnLocation = ActorInfo->OwnerActor->GetActorLocation() + FVector(200.0f, 0.0f, 100.0f);
+		USkeletalMeshComponent* Mesh = ActorInfo->OwnerActor->FindComponentByClass<USkeletalMeshComponent>();
+		if (Mesh)
+		{
+			FVector MeshScale = Mesh->GetComponentScale();
+			bIsFlipped = MeshScale.Y < 0.0f;
+		}
+
+		UCharacterMovementComponent* MovementComponent = ActorInfo->OwnerActor->FindComponentByClass<UCharacterMovementComponent>();
+
+		if (MovementComponent)
+		{
+			//UE_LOG(LogTemp, Error, TEXT("We have the movement."));
+			MovementComponent->DisableMovement();
+		}
+
+		FTimerHandle TimerHandle;
+		
+		FTimerDelegate TimerDelegate = FTimerDelegate::CreateLambda([MovementComponent]()
+			{
+				if (MovementComponent)
+				{
+					MovementComponent->SetMovementMode(MOVE_Walking);
+				}
+			});
+
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, 2.5f, false);
+
+		FVector SpawnLocation = ActorInfo->OwnerActor->GetActorLocation();
 		FRotator SpawnRotation = FRotator::ZeroRotator;
+
+		if (bIsFlipped)
+		{
+			SpawnLocation += FVector(-200.0f, 0.0f, 100.0f);
+			SpawnRotation = FRotator(0.0f, 180.0f, 0.0f);
+		}
+		else
+		{
+			SpawnLocation += FVector(200.0f, 0.0f, 100.0f);
+		}
 
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.Owner = ActorInfo->OwnerActor.Get();
-		//SpawnParams.Instigator = ActorInfo->AvatarActor.Get();
-		//SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 		AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(DialogueSpawn, SpawnLocation, SpawnRotation, SpawnParams);
 
@@ -83,10 +119,6 @@ void UGA_PNeutralSpecial::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 	PlayComboMotage->OnCancelled.AddDynamic(this, &UGA_PNeutralSpecial::K2_EndAbility);
 	PlayComboMotage->OnCompleted.AddDynamic(this, &UGA_PNeutralSpecial::K2_EndAbility);
 	PlayComboMotage->ReadyForActivation();
-
-	//UAbilityTask_WaitGameplayEvent* WaitComboEvent = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(this, GetComboChangeTag(), nullptr, false, false);
-	//WaitComboEvent->EventReceived.AddDynamic(this, &UGA_MeleeCombo::HandleComboEvent);
-	//WaitComboEvent->ReadyForActivation();
 
 	UAbilityTask_WaitGameplayEvent* WaitTargetAquiredEvent = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(this, UGAbilityGenericTags::GetGenericTargetAquiredTag());
 	WaitTargetAquiredEvent->EventReceived.AddDynamic(this, &UGA_PNeutralSpecial::HandleDamage);
