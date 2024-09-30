@@ -49,11 +49,6 @@ void AObjectHitbox::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AAc
 		return;
 	}
 
-	//if (!AlreadyDetectedActors.Contains(OtherPlayer))
-	//{
-	//	AlreadyDetectedActors.Add(OtherPlayer);
-	//}
-
 	if (OtherPlayer)
 	{
 		IAbilitySystemInterface* AbilitySystemInterface = Cast<IAbilitySystemInterface>(OtherPlayer);
@@ -67,6 +62,19 @@ void AObjectHitbox::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AAc
 
 void AObjectHitbox::GetDamage(AActor* OtherPlayer)
 {
+	if (OtherPlayer == GetOwner())
+	{
+	UE_LOG(LogTemp, Error, TEXT("I got the owner"));
+	return;
+	}
+
+	if (AlreadyDetectedActors.Contains(OtherPlayer))
+	{
+	UE_LOG(LogTemp, Error, TEXT("Already Detected"));
+	AlreadyDetectedActors.Remove(OtherPlayer);
+	return;
+	}
+
 	IAbilitySystemInterface* AbilitySystemInterface = Cast<IAbilitySystemInterface>(OtherPlayer);
 	if (AbilitySystemInterface)
 	{
@@ -83,24 +91,8 @@ void AObjectHitbox::GetDamage(AActor* OtherPlayer)
 			}
 		}
 	}
-
-	//if (OtherPlayer == GetOwner())
-	//{
-	//	UE_LOG(LogTemp, Error, TEXT("I got the owner"));
-	//	return;
-	//}
-
-	//if (AlreadyDetectedActors.Contains(OtherPlayer))
-	//{
-	//	UE_LOG(LogTemp, Error, TEXT("Already Detected"));
-	//	return;
-	//}
-
-	//UE_LOG(LogTemp, Warning, TEXT("I am damaging!"));
-
-	//FGameplayEventData Data;
-	//Data.TargetData = UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActor(OtherPlayer);
-	//UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwner(), UGAbilityGenericTags::GetGenericTargetAquiredTag(), Data);
+	
+	AlreadyDetectedActors.Add(OtherPlayer);
 }
 
 
