@@ -8,6 +8,8 @@
 
 class UBoxComponent;
 class UStaticMeshComponent;
+class UGameplayEffect;
+class UGAbilitySystemComponent;
 
 UCLASS()
 class AObjectHitbox : public AActor
@@ -37,5 +39,24 @@ public:
 
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	void GetDamage(AActor* OtherPlayer);
+
+	/*	Ability System	*/
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Abilities")
+	TSubclassOf<UGameplayEffect> DamageAbility;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Abilities")
+	UGAbilitySystemComponent* AbilitySystemComponent;
+
+	TSet<const AActor*> AlreadyDetectedActors;
+
+	/*	Timer	*/
+	FTimerHandle HitBoxTimerHandle;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Timer")
+	float HitBoxTime;
+
+	void DestroyHitbox();
 
 };
