@@ -57,6 +57,9 @@ void AObjectHitbox::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AAc
 			UE_LOG(LogTemp, Warning, TEXT("They have an ability"));
 			GetDamage(OtherPlayer);
 		}
+
+		//Call to player to be pushed, wait to merge
+
 	}
 }
 
