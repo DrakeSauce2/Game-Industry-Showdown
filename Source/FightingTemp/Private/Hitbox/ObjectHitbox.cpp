@@ -86,7 +86,7 @@ void AObjectHitbox::GetDamage(AActor* OtherPlayer)
 			FGameplayEffectSpecHandle EffectSpecHandle = AbilitySystemComp->MakeOutgoingSpec(DamageAbility, 1.0f, AbilitySystemComp->MakeEffectContext());
 			if (EffectSpecHandle.IsValid())
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Almost"));
+				UE_LOG(LogTemp, Warning, TEXT("(V)ictory Damage!"));
 				AbilitySystemComp->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 			}
 		}
