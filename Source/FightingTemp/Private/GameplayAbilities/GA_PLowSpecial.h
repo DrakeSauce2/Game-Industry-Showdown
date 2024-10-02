@@ -20,6 +20,9 @@ class UGA_PLowSpecial : public UGA_AbilityBase
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	TSubclassOf<class UGameplayEffect> DamageEffect;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Stun")
+	TSubclassOf<AActor> StunSphere;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Anim")
 	UAnimMontage* DamageMontage;
 

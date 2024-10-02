@@ -15,6 +15,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "GameplayAbilities/GAbilityGenericTags.h"
 #include "GameplayTagsManager.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 UGA_PLowSpecial::UGA_PLowSpecial()
 {
@@ -42,6 +43,50 @@ void UGA_PLowSpecial::ActivateAbility(const FGameplayAbilitySpecHandle Handle, c
 	}
 
 	UE_LOG(LogTemp, Warning, TEXT("Ability Commited! Playing Montage!"));
+
+	if (StunSphere)
+	{
+		UCharacterMovementComponent* MovementComponent = ActorInfo->OwnerActor->FindComponentByClass<UCharacterMovementComponent>();
+		
+		if (MovementComponent)
+		{
+			MovementComponent->DisableMovement();
+		}
+
+		FTimerHandle TimerHandle;
+
+		FTimerDelegate TimerDelegate = FTimerDelegate::CreateLambda([MovementComponent]()
+			{
+				if (MovementComponent)
+				{
+					MovementComponent->SetMovementMode(MOVE_Walking);
+				}
+			});
+
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, 2.5f, false);
+
+		FVector SpawnLocation = ActorInfo->OwnerActor->GetActorLocation();
+		FRotator SpawnRotation = FRotator::ZeroRotator;
+		
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = ActorInfo->OwnerActor.Get();
+
+		AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(StunSphere, SpawnLocation, SpawnRotation, SpawnParams);
+
+		if (SpawnedActor)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Spawned Object: %s"), *SpawnedActor->GetName());
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("Faild to spawn object."));
+		}
+
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("No class set to spawn."));
+	}
 
 	UAbilityTask_PlayMontageAndWait* PlayComboMotage
 		= UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
