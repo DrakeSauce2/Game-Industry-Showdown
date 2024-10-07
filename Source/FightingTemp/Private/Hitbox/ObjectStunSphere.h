@@ -7,6 +7,8 @@
 #include "ObjectStunSphere.generated.h"
 
 class USphereComponent;
+class UGameplayEffect;
+class UGAbilitySystemComponent;
 
 UCLASS()
 class AObjectStunSphere : public AActor
@@ -26,7 +28,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Collider")
 	USphereComponent* SphereComponent;
 
-	/*	Stun Player	*/
+	/*	Collision	*/
 
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -34,6 +36,15 @@ public:
 	TSet<const AActor*> AlreadyDetectedActors;
 
 	void GetStun(AActor* OtherPlayer);
+
+	/*	Stun	*/
+	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Abilities")
+	//TSubclassOf<UGameplayEffect> StunAbility;
+
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Abilities")
+	//UGAbilitySystemComponent* AbilitySystemComponent;
+
+	//TSet<const AActor*> AlreadyDetectedActors;
 
 	/*	Timer	*/
 	FTimerHandle StunTimerHandle;

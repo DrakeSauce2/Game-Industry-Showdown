@@ -11,7 +11,7 @@
 
 UGA_AbilityBase::UGA_AbilityBase()
 {
-
+	ActivationBlockedTags.AddTag(UGAbilityGenericTags::GetStunnedTag());
 }
 
 void UGA_AbilityBase::ExecuteSpawnVFXCue(UParticleSystem* VFXToSpawn, float Size, const FVector& Location)
