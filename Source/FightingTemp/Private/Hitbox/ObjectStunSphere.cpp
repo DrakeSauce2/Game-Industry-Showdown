@@ -41,12 +41,37 @@ void AObjectStunSphere::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 
 	if (OtherPlayer != GetOwner())
 	{
+		UE_LOG(LogTemp, Error, TEXT("They are in the circle"));
+		GetStun(OtherPlayer);
 	}
 
 }
 
 void AObjectStunSphere::GetStun(AActor* OtherPlayer)
 {
+	if (AlreadyDetectedActors.Contains(OtherPlayer))
+	{
+		UE_LOG(LogTemp, Error, TEXT("Player already detected"));
+		AlreadyDetectedActors.Remove(OtherPlayer);
+		return;
+	}
+
+	IAbilitySystemInterface* AbilitySystemInterface = Cast<IAbilitySystemInterface>(OtherPlayer);
+	if (AbilitySystemInterface)
+	{
+		UAbilitySystemComponent* AbilitySystemComp = AbilitySystemInterface->GetAbilitySystemComponent();
+		if (AbilitySystemComp && StunAbility)
+		{
+			FGameplayEffectSpecHandle EffectSpecHandle = AbilitySystemComp->MakeOutgoingSpec(StunAbility, 1.0f, AbilitySystemComp->MakeEffectContext());
+			if (EffectSpecHandle.IsValid())
+			{
+				AbilitySystemComp->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+			}
+		}
+	}
+
+	AlreadyDetectedActors.Add(OtherPlayer);
+
 }
 
 void AObjectStunSphere::DestroyStun()

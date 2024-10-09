@@ -187,6 +187,7 @@ void AGCharacterBase::SetHealthBar(UValueGauge* HealthBarToSet)
 
 void AGCharacterBase::StartStunAnim()
 {
+	UE_LOG(LogTemp, Error, TEXT("I am stunned!"));
 	PlayMontage(StunMontage);
 }
 

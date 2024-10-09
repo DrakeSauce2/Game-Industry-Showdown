@@ -146,5 +146,4 @@ private:
 	UFUNCTION()
 	void PlayMontage(UAnimMontage* MontageToPlay);
 
-
 };
