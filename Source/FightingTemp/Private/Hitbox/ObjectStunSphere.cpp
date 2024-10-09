@@ -2,8 +2,15 @@
 
 
 #include "Hitbox/ObjectStunSphere.h"
+
 #include "Components/SphereComponent.h"
 #include "Player/GCharacterBase.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "GameplayAbilities/GAbilityGenericTags.h"
+#include "GameplayAbilities/GAbilitySystemComponent.h"
+#include "GameplayEffect.h"
+#include "AbilitySystemInterface.h"
+
 
 // Sets default values
 AObjectStunSphere::AObjectStunSphere()
@@ -12,6 +19,8 @@ AObjectStunSphere::AObjectStunSphere()
 	SphereComponent->SetCollisionProfileName(TEXT("Trigger"));
 	
 	RootComponent = SphereComponent;
+
+	SphereComponent->OnComponentBeginOverlap.AddDynamic(this, &AObjectStunSphere::OnOverlapBegin);
 
 	//Remove these once the effects are set - MR
 	SphereComponent->SetHiddenInGame(false);
@@ -32,36 +41,55 @@ void AObjectStunSphere::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 
 	if (OtherPlayer == GetOwner())
 	{
-		return;
+		//UE_LOG(LogTemp, Warning, TEXT("Got Owner, do nothing."));
 	}
 
 	if (OtherPlayer)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Player in the Stun Sphere"));
-		GetStun(OtherPlayer);
+		//IAbilitySystemInterface* AbilitySystemInterface = Cast<IAbilitySystemInterface>(OtherPlayer);
+		//if (AbilitySystemInterface)
+		//{
+		//	//UE_LOG(LogTemp, Warning, TEXT("Player has an ability"));
+		//	GetStun(OtherPlayer);
+		//}
 	}
 
 }
 
 void AObjectStunSphere::GetStun(AActor* OtherPlayer)
 {
-	if (OtherPlayer == GetOwner())
-	{
-		UE_LOG(LogTemp, Error, TEXT("I got the owner"));
-		return;
-	}
+	//if (OtherPlayer == GetOwner())
+	//{
+	//	//UE_LOG(LogTemp, Error, TEXT("I got the owner, do nothing"));
+	//}
 
-	if (AlreadyDetectedActors.Contains(OtherPlayer))
-	{
-		UE_LOG(LogTemp, Error, TEXT("Already Detected"));
-		AlreadyDetectedActors.Remove(OtherPlayer);
-		return;
-	}
+	//if (AlreadyDetectedActors.Contains(OtherPlayer))
+	//{
+	//	//UE_LOG(LogTemp, Error, TEXT("Already Detected"));
+	//	AlreadyDetectedActors.Remove(OtherPlayer);
+	//	return;
+	//}
 
-	UE_LOG(LogTemp, Warning, TEXT("Stunnning"));
-	//Stun the Player
+	////Stun the Player
+	//IAbilitySystemInterface* AbilitySystemInterface = Cast<IAbilitySystemInterface>(OtherPlayer);
+	//if (AbilitySystemInterface)
+	//{
+	//	UAbilitySystemComponent* AbilitySystemComp = AbilitySystemInterface->GetAbilitySystemComponent();
+	//	if (AbilitySystemComp && StunAbility)
+	//	{
+	//		if (OtherPlayer != GetOwner())
+	//		{
+	//			FGameplayEffectSpecHandle EffectSpecHandle = AbilitySystemComp->MakeOutgoingSpec(StunAbility, 1.0f, AbilitySystemComp->MakeEffectContext());
+	//			if (EffectSpecHandle.IsValid())
+	//			{
+	//				UE_LOG(LogTemp, Warning, TEXT("Stun Away"));
+	//				AbilitySystemComp->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+	//			}
+	//		}
+	//	}
+	//}
 
-	AlreadyDetectedActors.Add(OtherPlayer);
+	//AlreadyDetectedActors.Add(OtherPlayer);
 }
 
 void AObjectStunSphere::DestroyStun()

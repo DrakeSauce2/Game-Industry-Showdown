@@ -38,13 +38,11 @@ public:
 	void GetStun(AActor* OtherPlayer);
 
 	/*	Stun	*/
-	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Abilities")
-	//TSubclassOf<UGameplayEffect> StunAbility;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Abilities")
+	TSubclassOf<UGameplayEffect> StunAbility;
 
-	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Abilities")
-	//UGAbilitySystemComponent* AbilitySystemComponent;
-
-	//TSet<const AActor*> AlreadyDetectedActors;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Abilities")
+	UGAbilitySystemComponent* AbilitySystemComponent;
 
 	/*	Timer	*/
 	FTimerHandle StunTimerHandle;
