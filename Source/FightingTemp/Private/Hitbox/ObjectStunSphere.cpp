@@ -65,6 +65,8 @@ void AObjectStunSphere::GetStun(AActor* OtherPlayer)
 			FGameplayEffectSpecHandle EffectSpecHandle = AbilitySystemComp->MakeOutgoingSpec(StunAbility, 1.0f, AbilitySystemComp->MakeEffectContext());
 			if (EffectSpecHandle.IsValid())
 			{
+				EffectSpecHandle.Data->SetSetByCallerMagnitude(FGameplayTag::RequestGameplayTag("SetByCaller.Duration"), 10.0f); //Not safe - Have a property FGameplayTag
+				//UPROPERTY - Only accept SetByCaller tags
 				AbilitySystemComp->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 			}
 		}
