@@ -10,6 +10,7 @@ class UBoxComponent;
 class UStaticMeshComponent;
 class UGameplayEffect;
 class UGAbilitySystemComponent;
+class UProjectileMovementComponent;
 
 UCLASS()
 class AProjectileHitbox : public AActor
@@ -60,5 +61,7 @@ public:
 	void DestroyHitbox();
 
 	/*	Projectile	*/
+	UPROPERTY(VisibleAnywhere, Category = "Projectile")
+	UProjectileMovementComponent* ProjectileMovement;
 
 };
