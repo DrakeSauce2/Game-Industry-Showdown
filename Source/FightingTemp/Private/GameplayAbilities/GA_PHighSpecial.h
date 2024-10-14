@@ -32,6 +32,10 @@ class UGA_PHighSpecial : public UGA_AbilityBase
 	UFUNCTION()
 	void AbilityInputPressed(float TimeWaited);
 
+	UFUNCTION(BlueprintCallable, Category = "Random")
+	int32 NumberGenerator(int32 Min, int32 Max);
+
+
 	FName SpecialName;
 
 	bool bSpecialCommitted;

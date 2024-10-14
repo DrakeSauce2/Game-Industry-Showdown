@@ -16,6 +16,8 @@
 #include "GameplayAbilities/GAbilityGenericTags.h"
 #include "GameplayTagsManager.h"
 
+#include "Math/UnrealMathUtility.h"
+
 UGA_PHighSpecial::UGA_PHighSpecial()
 {
 	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag("ability.combo.ability"));
@@ -43,6 +45,28 @@ void UGA_PHighSpecial::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 
 	UE_LOG(LogTemp, Warning, TEXT("Ability Commited! Playing Montage!"));
 
+	//Play Ability Here
+	int32 RandomInt = NumberGenerator(1, 4);
+	UE_LOG(LogTemp, Warning, TEXT("Random Number: %d"), RandomInt);
+	switch (RandomInt)
+	{
+	case 1:
+		UE_LOG(LogTemp, Warning, TEXT("Upgrade one: Gain Health"));
+		break;
+	case 2:
+		UE_LOG(LogTemp, Warning, TEXT("Upgrade one: Gain Speed"));
+		break;
+	case 3:
+		UE_LOG(LogTemp, Warning, TEXT("Upgrade one: Gain Attack"));
+		break;
+	case 4:
+		UE_LOG(LogTemp, Warning, TEXT("Upgrade one: Gain Defense"));
+		break;
+	default:
+		UE_LOG(LogTemp, Error, TEXT("Upgrade Not Found."));
+		break;
+	}
+
 	UAbilityTask_PlayMontageAndWait* PlayComboMotage
 		= UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
 			this,
@@ -54,10 +78,6 @@ void UGA_PHighSpecial::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 	PlayComboMotage->OnCancelled.AddDynamic(this, &UGA_PHighSpecial::K2_EndAbility);
 	PlayComboMotage->OnCompleted.AddDynamic(this, &UGA_PHighSpecial::K2_EndAbility);
 	PlayComboMotage->ReadyForActivation();
-
-	//UAbilityTask_WaitGameplayEvent* WaitComboEvent = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(this, GetComboChangeTag(), nullptr, false, false);
-	//WaitComboEvent->EventReceived.AddDynamic(this, &UGA_MeleeCombo::HandleComboEvent);
-	//WaitComboEvent->ReadyForActivation();
 
 	UAbilityTask_WaitGameplayEvent* WaitTargetAquiredEvent = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(this, UGAbilityGenericTags::GetGenericTargetAquiredTag());
 	WaitTargetAquiredEvent->EventReceived.AddDynamic(this, &UGA_PHighSpecial::HandleDamage);
@@ -113,6 +133,11 @@ void UGA_PHighSpecial::AbilityInputPressed(float TimeWaited)
 {
 	SetupWaitInputTask();
 	TryCommitSpecial(FGameplayEventData());
+}
+
+int32 UGA_PHighSpecial::NumberGenerator(int32 Min, int32 Max)
+{
+	return FMath::RandRange(Min,Max);
 }
 
 void UGA_PHighSpecial::SetupWaitInputTask()
