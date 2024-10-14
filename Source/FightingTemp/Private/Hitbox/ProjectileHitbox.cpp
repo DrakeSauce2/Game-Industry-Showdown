@@ -28,13 +28,13 @@ AProjectileHitbox::AProjectileHitbox()
 	HitboxComponent->OnComponentBeginOverlap.AddDynamic(this, &AProjectileHitbox::OnOverlapBegin);
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Comp"));
-	ProjectileMovement->UpdatedComponent = HitboxComponent;
+	ProjectileMovement->UpdatedComponent = MeshComponent;
 	ProjectileMovement->InitialSpeed = 3000.f;
 	ProjectileMovement->MaxSpeed = 3000.f;
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bShouldBounce = true;
-
-	InitialLifeSpan = 100.0f;
+	ProjectileMovement->bConstrainToPlane = true;
+	ProjectileMovement->SetPlaneConstraintAxisSetting(EPlaneConstraintAxisSetting::Y);
 }
 
 // Called when the game starts or when spawned

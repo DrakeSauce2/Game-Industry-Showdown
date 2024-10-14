@@ -46,67 +46,67 @@ void UGA_PAirSpecial::ActivateAbility(const FGameplayAbilitySpecHandle Handle, c
 
 	UE_LOG(LogTemp, Warning, TEXT("Ability Commited! Playing Montage!"));
 
-	//if (CodeSpawn)
-	//{
-	//	USkeletalMeshComponent* Mesh = ActorInfo->OwnerActor->FindComponentByClass<USkeletalMeshComponent>();
-	//	if (Mesh)
-	//	{
-	//		FVector MeshScale = Mesh->GetComponentScale();
-	//		bIsFlipped = MeshScale.Y < 0.0f;
-	//	}
+	if (CodeSpawn)
+	{
+		USkeletalMeshComponent* Mesh = ActorInfo->OwnerActor->FindComponentByClass<USkeletalMeshComponent>();
+		if (Mesh)
+		{
+			FVector MeshScale = Mesh->GetComponentScale();
+			bIsFlipped = MeshScale.Y < 0.0f;
+	}
 
-	//	UCharacterMovementComponent* MovementComponent = ActorInfo->OwnerActor->FindComponentByClass<UCharacterMovementComponent>();
+		UCharacterMovementComponent* MovementComponent = ActorInfo->OwnerActor->FindComponentByClass<UCharacterMovementComponent>();
 
-	//	if (MovementComponent)
-	//	{
-	//		//UE_LOG(LogTemp, Error, TEXT("We have the movement."));
-	//		MovementComponent->DisableMovement();
-	//	}
+		if (MovementComponent)
+		{
+			//UE_LOG(LogTemp, Error, TEXT("We have the movement."));
+			MovementComponent->DisableMovement();
+		}
 
-	//	FTimerHandle TimerHandle;
+		FTimerHandle TimerHandle;
 
-	//	FTimerDelegate TimerDelegate = FTimerDelegate::CreateLambda([MovementComponent]()
-	//		{
-	//			if (MovementComponent)
-	//			{
-	//				MovementComponent->SetMovementMode(MOVE_Walking);
-	//			}
-	//		});
+		FTimerDelegate TimerDelegate = FTimerDelegate::CreateLambda([MovementComponent]()
+		{
+				if (MovementComponent)
+				{
+					MovementComponent->SetMovementMode(MOVE_Walking);
+				}
+			});
 
-	//	GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, 2.5f, false);
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, 2.5f, false);
 
-	//	FVector SpawnLocation = ActorInfo->OwnerActor->GetActorLocation();
-	//	FRotator SpawnRotation = FRotator::ZeroRotator;
+		FVector SpawnLocation = ActorInfo->OwnerActor->GetActorLocation();
+		FRotator SpawnRotation = FRotator::ZeroRotator;
 
-	//	if (bIsFlipped)
-	//	{
-	//		SpawnLocation += FVector(-200.0f, 0.0f, 100.0f);
-	//		SpawnRotation = FRotator(0.0f, 180.0f, 0.0f);
-	//	}
-	//	else
-	//	{
-	//		SpawnLocation += FVector(200.0f, 0.0f, 100.0f);
-	//	}
+		if (bIsFlipped)
+		{
+			SpawnLocation += FVector(-100.0f, 0.0f, 100.0f);
+			SpawnRotation = FRotator(0.0f, 180.0f, 0.0f);
+		}
+		else
+		{
+			SpawnLocation += FVector(100.0f, 0.0f, 0.0f);
+		}
 
-	//	FActorSpawnParameters SpawnParams;
-	//	SpawnParams.Owner = ActorInfo->OwnerActor.Get();
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = ActorInfo->OwnerActor.Get();
 
-	//	AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(CodeSpawn, SpawnLocation, SpawnRotation, SpawnParams);
+		AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(CodeSpawn, SpawnLocation, SpawnRotation, SpawnParams);
 
-	//	if (SpawnedActor)
-	//	{
-	//		UE_LOG(LogTemp, Warning, TEXT("Spawned Object: %s"), *SpawnedActor->GetName());
-	//	}
-	//	else
-	//	{
-	//		UE_LOG(LogTemp, Error, TEXT("Faild to spawn object."));
-	//	}
+		if (SpawnedActor)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Spawned Object: %s"), *SpawnedActor->GetName());
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("Faild to spawn object."));
+		}
 
-	//}
-	//else
-	//{
-	//	UE_LOG(LogTemp, Error, TEXT("No class set to spawn."));
-	//}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("No class set to spawn."));
+	}
 
 	UAbilityTask_PlayMontageAndWait* PlayComboMotage
 		= UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
