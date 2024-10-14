@@ -17,6 +17,7 @@
 #include "GameplayTagsManager.h"
 
 #include "Math/UnrealMathUtility.h"
+#include "TimerManager.h"
 
 UGA_PHighSpecial::UGA_PHighSpecial()
 {
@@ -66,6 +67,8 @@ void UGA_PHighSpecial::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 		UE_LOG(LogTemp, Error, TEXT("Upgrade Not Found."));
 		break;
 	}
+
+	//StartTimer();
 
 	UAbilityTask_PlayMontageAndWait* PlayComboMotage
 		= UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
@@ -146,4 +149,16 @@ void UGA_PHighSpecial::SetupWaitInputTask()
 	WaitInputPress->OnPress.AddDynamic(this, &UGA_PHighSpecial::AbilityInputPressed);
 	WaitInputPress->ReadyForActivation();
 }
+
+//void UGA_PHighSpecial::StartTimer()
+//{
+//	UE_LOG(LogTemp, Warning, TEXT("I have started the time"));
+//	GetWorld()->GetTimerManager().SetTimer(BoostTimerHandle, this, &UGA_PHighSpecial::EndBoost, BoostTime, false);
+//}
+//
+//void UGA_PHighSpecial::EndBoost()
+//{
+//	UE_LOG(LogTemp, Error, TEXT("I have ended the time"));
+//	//End the boosted ability
+//}
 

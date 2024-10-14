@@ -42,4 +42,15 @@ class UGA_PHighSpecial : public UGA_AbilityBase
 
 	void SetupWaitInputTask();
 
+	///*	Timer	*/
+	//FTimerHandle BoostTimerHandle;
+	//
+	//UPROPERTY(EditDefaultsOnly, Category = "Timer")
+	//float BoostTime;
+
+	//UFUNCTION()
+	//void StartTimer();
+
+	//UFUNCTION()
+	//void EndBoost();
 };
