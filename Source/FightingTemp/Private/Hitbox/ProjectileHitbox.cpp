@@ -95,6 +95,7 @@ void AProjectileHitbox::GetDamage(AActor* OtherPlayer)
 			{
 				UE_LOG(LogTemp, Warning, TEXT("(V)ictory Damage!"));
 				AbilitySystemComp->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+				Destroy();
 			}
 		}
 	}
