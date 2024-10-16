@@ -58,10 +58,7 @@ void UGA_PHighSpecial::ActivateAbility(const FGameplayAbilitySpecHandle Handle, 
 		UE_LOG(LogTemp, Warning, TEXT("Upgrade one: Gain Speed"));
 		break;
 	case 3:
-		UE_LOG(LogTemp, Warning, TEXT("Upgrade one: Gain Attack"));
-		break;
-	case 4:
-		UE_LOG(LogTemp, Warning, TEXT("Upgrade one: Gain Defense"));
+		UE_LOG(LogTemp, Warning, TEXT("Upgrade one: Gain Knockback"));
 		break;
 	default:
 		UE_LOG(LogTemp, Error, TEXT("Upgrade Not Found."));
