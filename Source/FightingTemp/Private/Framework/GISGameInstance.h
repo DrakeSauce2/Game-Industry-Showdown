@@ -17,7 +17,10 @@ class UGISGameInstance : public UGameInstance
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Character Selection")
-	TSubclassOf<class AGCharacterBase> SelectedCharacterClass;
+	TSubclassOf<class AGCharacterBase> SelectedCharacterClassOne;
+
+	UPROPERTY(EditAnywhere, Category = "Character Selection")
+	TSubclassOf<class AGCharacterBase> SelectedCharacterClassTwo;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	UInputMappingContext* InputMapping;

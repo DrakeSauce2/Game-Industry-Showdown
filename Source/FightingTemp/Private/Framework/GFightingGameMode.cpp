@@ -389,7 +389,7 @@ void AGFightingGameMode::RoundIntermission()
 void AGFightingGameMode::SpawnPlayerControllers()
 {
 	UGISGameInstance* GameInstance = Cast<UGISGameInstance>(GetGameInstance());
-	if (!GameInstance || !GameInstance->SelectedCharacterClass) return;
+	if (!GameInstance || !GameInstance->SelectedCharacterClassOne) return;
 
 
 	
@@ -402,7 +402,7 @@ void AGFightingGameMode::SpawnPlayerControllers()
 		PlayerOneData.StartingPosition = SpawnLocation;
 
 		// TODO: Implement character selection choice properly
-		PlayerOneData.PlayerCharacter = SpawnAndPossessCharacter(PlayerOneController, GameInstance->SelectedCharacterClass, SpawnLocation);
+		PlayerOneData.PlayerCharacter = SpawnAndPossessCharacter(PlayerOneController, GameInstance->SelectedCharacterClassOne, SpawnLocation);
 		PlayerDataArray.Add(PlayerOneData);
 
 		PlayerOneData.PlayerCharacter->OnPlayerDeath.AddDynamic(this, &AGFightingGameMode::HandlePlayerDead);
@@ -417,7 +417,7 @@ void AGFightingGameMode::SpawnPlayerControllers()
 		PlayerTwoData.StartingPosition = SpawnLocation;
 
 		// TODO: Implement character selection choice properly
-		PlayerTwoData.PlayerCharacter = SpawnAndPossessCharacter(PlayerTwoController, GameInstance->SelectedCharacterClass, SpawnLocation);
+		PlayerTwoData.PlayerCharacter = SpawnAndPossessCharacter(PlayerTwoController, GameInstance->SelectedCharacterClassTwo, SpawnLocation);
 		PlayerDataArray.Add(PlayerTwoData);
 
 		PlayerTwoData.PlayerCharacter->OnPlayerDeath.AddDynamic(this, &AGFightingGameMode::HandlePlayerDead);
