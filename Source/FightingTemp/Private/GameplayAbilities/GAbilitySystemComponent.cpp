@@ -77,7 +77,6 @@ void UGAbilitySystemComponent::TryActivateDirectionalAttack(const FVector& Direc
 	if (!IsGrounded)
 	{
 		// Do Air Attack
-
 		return;
 	}
 
