@@ -45,8 +45,6 @@ void UGAbilitySystemComponent::GrantInitialAbilities()
 	SetupAttackGroupToAttackMap(&MediumAttackGroup, EAbilityInputID::MediumAttack);
 	SetupAttackGroupToAttackMap(&HeavyAttackGroup, EAbilityInputID::HeavyAttack);
 	SetupAttackGroupToAttackMap(&SpecialAttackGroup, EAbilityInputID::SpecialAttack);
-
-	AirAttackSpecHandle = GiveAbility(FGameplayAbilitySpec{ AirAttack, 1, 1, GetOwner() });
 }
 
 void UGAbilitySystemComponent::SetupAttackGroupToAttackMap(FAttackGroup* AttackGroup, const EAbilityInputID& InputType)
@@ -70,6 +68,11 @@ void UGAbilitySystemComponent::AssignAbilityAttackDirections(const int& Index, c
 	Key.InputType = InputType;
 
 	DirectionToAbilityHandleMap.Add(Key, SpecHandle);
+
+	AirLightSpecHandle = GiveAbility(FGameplayAbilitySpec{ AirLight, 1, 1, GetOwner() });
+	AirMediumSpecHandle = GiveAbility(FGameplayAbilitySpec{ AirMedium, 1, 1, GetOwner() });
+	AirHeavySpecHandle = GiveAbility(FGameplayAbilitySpec{ AirHeavy, 1, 1, GetOwner() });
+	AirSpecialSpecHandle = GiveAbility(FGameplayAbilitySpec{ AirSpecial, 1, 1, GetOwner() });
 }
 
 #pragma endregion 
@@ -79,9 +82,38 @@ void UGAbilitySystemComponent::TryActivateDirectionalAttack(const FVector& Direc
 	if (!IsGrounded)
 	{
 		// Do Air Attack
-		FGameplayAbilitySpecHandle SpecHandle = AirAttackSpecHandle;
-		bool AbilityActive = TryActivateAbility(SpecHandle, false);
-		UE_LOG(LogTemp, Error, TEXT("Has something happened: %s"), AbilityActive ? TEXT("True") : TEXT("False"));
+		// FGameplayAbilitySpecHandle SpecHandle = AirAttackSpecHandle;
+		//bool AbilityActive = TryActivateAbility(SpecHandle, false);
+		//UE_LOG(LogTemp, Error, TEXT("Has something happened: %s"), AbilityActive ? TEXT("True") : TEXT("False"));
+		
+		FGameplayAbilitySpecHandle SpecHandle;
+		bool AbilityActive;
+
+		switch ((int)InputType)
+		{
+		case 3U:
+			UE_LOG(LogTemp, Error, TEXT("Light Attack"));
+			SpecHandle = AirLightSpecHandle;
+			AbilityActive = TryActivateAbility(SpecHandle, false);
+			break;
+		case 4U:
+			UE_LOG(LogTemp, Error, TEXT("Medium Attack"));
+			SpecHandle = AirMediumSpecHandle;
+			AbilityActive = TryActivateAbility(SpecHandle, false);
+			break;
+		case 5U:
+			UE_LOG(LogTemp, Error, TEXT("Heavy Attack"));
+			SpecHandle = AirHeavySpecHandle;
+			AbilityActive = TryActivateAbility(SpecHandle, false);
+			break;
+		case 6U:
+			UE_LOG(LogTemp, Error, TEXT("Special Attack"));
+			SpecHandle = AirSpecialSpecHandle;
+			AbilityActive = TryActivateAbility(SpecHandle, false);
+			break;
+		default:
+			break;
+		}
 
 		return;
 	}

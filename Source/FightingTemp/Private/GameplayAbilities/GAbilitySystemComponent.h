@@ -99,8 +99,17 @@ private:
 	TMap<FDirectionAttackKey, FGameplayAbilitySpecHandle> DirectionToAbilityHandleMap;
 
 public:
-	FGameplayAbilitySpecHandle AirAttackSpecHandle;
+	FGameplayAbilitySpecHandle AirLightSpecHandle;
+	FGameplayAbilitySpecHandle AirMediumSpecHandle;
+	FGameplayAbilitySpecHandle AirHeavySpecHandle;
+	FGameplayAbilitySpecHandle AirSpecialSpecHandle;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<UGA_AbilityBase> AirAttack;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attacks")
+	TSubclassOf<UGA_AbilityBase> AirLight;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attacks")
+	TSubclassOf<UGA_AbilityBase> AirMedium;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attacks")
+	TSubclassOf<UGA_AbilityBase> AirHeavy;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attacks")
+	TSubclassOf<UGA_AbilityBase> AirSpecial;
 };
