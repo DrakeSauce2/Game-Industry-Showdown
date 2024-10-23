@@ -92,22 +92,18 @@ void UGAbilitySystemComponent::TryActivateDirectionalAttack(const FVector& Direc
 		switch ((int)InputType)
 		{
 		case 3U:
-			UE_LOG(LogTemp, Error, TEXT("Light Attack"));
 			SpecHandle = AirLightSpecHandle;
 			AbilityActive = TryActivateAbility(SpecHandle, false);
 			break;
 		case 4U:
-			UE_LOG(LogTemp, Error, TEXT("Medium Attack"));
 			SpecHandle = AirMediumSpecHandle;
 			AbilityActive = TryActivateAbility(SpecHandle, false);
 			break;
 		case 5U:
-			UE_LOG(LogTemp, Error, TEXT("Heavy Attack"));
 			SpecHandle = AirHeavySpecHandle;
 			AbilityActive = TryActivateAbility(SpecHandle, false);
 			break;
 		case 6U:
-			UE_LOG(LogTemp, Error, TEXT("Special Attack"));
 			SpecHandle = AirSpecialSpecHandle;
 			AbilityActive = TryActivateAbility(SpecHandle, false);
 			break;
