@@ -45,6 +45,8 @@ void UGAbilitySystemComponent::GrantInitialAbilities()
 	SetupAttackGroupToAttackMap(&MediumAttackGroup, EAbilityInputID::MediumAttack);
 	SetupAttackGroupToAttackMap(&HeavyAttackGroup, EAbilityInputID::HeavyAttack);
 	SetupAttackGroupToAttackMap(&SpecialAttackGroup, EAbilityInputID::SpecialAttack);
+
+	AirAttackSpecHandle = GiveAbility(FGameplayAbilitySpec{ AirAttack, 1, 1, GetOwner() });
 }
 
 void UGAbilitySystemComponent::SetupAttackGroupToAttackMap(FAttackGroup* AttackGroup, const EAbilityInputID& InputType)
@@ -77,6 +79,10 @@ void UGAbilitySystemComponent::TryActivateDirectionalAttack(const FVector& Direc
 	if (!IsGrounded)
 	{
 		// Do Air Attack
+		FGameplayAbilitySpecHandle SpecHandle = AirAttackSpecHandle;
+		bool AbilityActive = TryActivateAbility(SpecHandle, false);
+		UE_LOG(LogTemp, Error, TEXT("Has something happened: %s"), AbilityActive ? TEXT("True") : TEXT("False"));
+
 		return;
 	}
 

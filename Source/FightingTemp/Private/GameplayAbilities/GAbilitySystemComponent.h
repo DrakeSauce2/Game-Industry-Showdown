@@ -97,4 +97,10 @@ private:
 
 	UPROPERTY()
 	TMap<FDirectionAttackKey, FGameplayAbilitySpecHandle> DirectionToAbilityHandleMap;
+
+public:
+	FGameplayAbilitySpecHandle AirAttackSpecHandle;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UGA_AbilityBase> AirAttack;
 };
